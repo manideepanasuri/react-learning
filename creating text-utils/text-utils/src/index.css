@@ -4,3 +4,42 @@
 .btn{
   @apply p-2 text-gray-100 bg-gray-900 rounded-md hover:text-gray-200 hover:bg-gray-800 active:text-gray-200 active:bg-gray-800;
 }
+.btn-light{
+  @apply p-2 text-gray-900 bg-gray-100 rounded-md hover:text-gray-800 hover:bg-gray-200 active:text-gray-800 active:bg-gray-200
+}
+.btn-dark{
+  @apply p-2 text-gray-100 bg-gray-900 rounded-md hover:text-gray-200 hover:bg-gray-800 active:text-gray-200 active:bg-gray-800;
+}
+.toggle-light{
+  @apply px-1 text-gray-100 bg-gray-900 rounded-full hover:text-gray-200 hover:bg-gray-800 active:text-gray-200 active:bg-gray-800;
+}
+.toggle-dark{
+  @apply px-1 text-gray-900 bg-blue-700 rounded-full hover:text-gray-800 hover:bg-blue-700 active:text-gray-800 active:bg-blue-700
+}
+.toggle-div-light{
+  @apply top-1/2 -translate-y-1/2 m-0 mx-1 left-0 right-auto
+}
+.toggle-div-dark{
+  @apply top-1/2 -translate-y-1/2 m-0 mx-1 left-full -translate-x-7
+}
+.navbar-light{
+  @apply bg-slate-300 text-gray-900
+}
+.navbar-dark{
+  @apply bg-black text-gray-50
+}
+.light-bg{
+  @apply bg-white
+}
+.dark-bg{
+  @apply bg-gray-700
+}
+.light-txt{
+  @apply text-gray-900
+}
+.dark-txt{
+  @apply text-gray-100
+}
+.text-area-dark{
+  @apply bg-slate-600 placeholder:text-gray-100 text-gray-50
+}
