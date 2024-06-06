@@ -6,6 +6,8 @@ import Home from "./pages/home";
 import Aboutus from "./pages/aboutus";
 import Notestate from "./context/notes/Notestate";
 import Addnotes from "./pages/Addnotes";
+import Alertstate from "./context/alert/Alertstate";
+import Userstate from "./context/user/Userstate";
 
 const router = createBrowserRouter([
   {
@@ -23,13 +25,21 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  
 
   return (
-    <>
-    <Notestate>
-      <RouterProvider router={router} />
-    </Notestate>
-    </>
+   
+    <Alertstate>
+    <Userstate>
+      <Notestate>
+      
+        <RouterProvider router={router} />
+        
+      </Notestate>
+      </Userstate>
+    </Alertstate>
+    
+    
   )
 }
 

@@ -15,7 +15,7 @@ export default function Alertstate(props) {
       setMsg("");
       setSuccess("success");
       
-    }, 1000);
+    }, 2000);
   }
   function closeAlert() {
     setShow(false);
@@ -24,7 +24,7 @@ export default function Alertstate(props) {
   }
   return (
     <AlertContext.Provider value={{show,msg,success,showAlert,closeAlert}}>
-      {props.childern}
+      {props.children}
     </AlertContext.Provider>
   )
 }

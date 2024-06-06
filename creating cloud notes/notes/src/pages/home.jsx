@@ -14,7 +14,7 @@ import {Link} from "react-router-dom"
 export default function Home() {
   let {notes,getNotes}=useContext(NoteContext);
   
-    const data={};
+    
     useEffect(()=>{getNotes()},[]);
     
   function handelClick() {    

@@ -1,9 +1,11 @@
 //import React from 'react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import NoteContext from './Notecontext'
 import propTypes from "prop-types"
+import AlertContext from '../alert/Alertcontex'
 
 export default function Notestate(props) {
+  let {showAlert}=useContext(AlertContext);
   let host="http://localhost:3000"
   let notesdef=[]
   let [notes,setNotes]=useState(notesdef);
@@ -18,8 +20,11 @@ export default function Notestate(props) {
     }
     })
     let notestemp=await response.json();
+    if(!notestemp.success){
+      showAlert(notestemp.err,"error")
+      return}
     console.log(notestemp);
-    notesdef=notestemp;
+    notesdef=notestemp.notes;
     setNotes(notesdef);
   }
   //route:1 :add notes 
@@ -39,6 +44,12 @@ export default function Notestate(props) {
     let result=await response.json();
     //console.log(result);
     //frontend
+    if(!result.success){
+      showAlert(result.err,"error")
+    }
+    else{
+      showAlert("Notes added Successfully","success");
+    }
     notesdef=JSON.parse(JSON.stringify(notes));
     notesdef.unshift(result)
     //console.log(notesdef);
@@ -59,6 +70,12 @@ export default function Notestate(props) {
       })
     let result=await response.json();
     console.log(result);
+    if(!result.success){
+      showAlert(result.err,"error")
+    }
+    else{
+      showAlert("Notes deleted Successfully","success");
+    }
     notesdef=JSON.parse(JSON.stringify(notes));
     notesdef=notesdef.filter((note)=>{return note._id!=id})
     setNotes(notesdef);
@@ -79,6 +96,12 @@ export default function Notestate(props) {
       })
     let result= await response.json();
     console.log(result)
+    if(!result.success){
+      showAlert(result.err,"error")
+    }
+    else{
+      showAlert("Notes edited Successfully","success");
+    }
     notesdef=JSON.parse(JSON.stringify(notes));
     
   }

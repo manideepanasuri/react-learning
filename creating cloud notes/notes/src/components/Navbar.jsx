@@ -2,6 +2,8 @@
 //import { useContext } from "react";
 import { Link,useLocation } from "react-router-dom";
 import Alert from "./Alert";
+import { useContext } from "react";
+import AlertContext from "../context/alert/Alertcontex";
 //import NoteContext from "../context/notes/Notecontext";
 
 
@@ -10,6 +12,7 @@ import Alert from "./Alert";
 
 export default function Navbar() {
   let location=useLocation();
+  let {show}=useContext(AlertContext);
   //let state=useContext(NoteContext);
   //console.log("hi");
   return (
@@ -28,9 +31,10 @@ export default function Navbar() {
         </Link>
         
       </ul>
-      <div className="absolute top-full left-1/2 -translate-x-1/2">
+      {(show)?<div className="absolute top-full left-1/2 -translate-x-1/2">
         <Alert/>
-      </div>
+      </div>:<></>
+      }
     </div>
   )
 }

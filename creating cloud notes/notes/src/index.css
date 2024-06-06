@@ -17,8 +17,8 @@
   @apply transition-all duration-200 
 }
 .success{
-  @apply bg-green-300 bg-opacity-40 text-green-950 border border-green-950
+  @apply bg-green-300 bg-opacity-40 text-green-950 border border-green-900
 }
 .error{
-  @apply bg-red-300 bg-opacity-40 text-red-900 border border-red-950
+  @apply bg-red-300 bg-opacity-40 text-red-950 border border-red-900
 }
