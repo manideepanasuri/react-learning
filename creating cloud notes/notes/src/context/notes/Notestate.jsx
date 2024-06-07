@@ -1,14 +1,17 @@
 //import React from 'react'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import NoteContext from './Notecontext'
 import propTypes from "prop-types"
 import AlertContext from '../alert/Alertcontex'
+import UserContext from '../user/Usercontext';
 
 export default function Notestate(props) {
   let {showAlert}=useContext(AlertContext);
   let host="http://localhost:3000"
   let notesdef=[]
   let [notes,setNotes]=useState(notesdef);
+  let {token}=useContext(UserContext);
+  
   //route get notes
   let getNotes=async ()=>{
     let response=await fetch(`${host}/api/notes/fetchNotes`,{
@@ -16,9 +19,10 @@ export default function Notestate(props) {
     headers:{
       "Accept": "*/*",
       "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWQ4NGRhMDBjMjJiNjRmMWNiOWQyOCIsImlhdCI6MTcxNzQwODIzMX0.LWrEKvdb2H1bevTIq8p1TKfsWzVRx4UK7K9Cws6N4uo"
+      "auth-token": token
     }
     })
+    console.log(token);
     let notestemp=await response.json();
     if(!notestemp.success){
       showAlert(notestemp.err,"error")
@@ -26,6 +30,7 @@ export default function Notestate(props) {
     console.log(notestemp);
     notesdef=notestemp.notes;
     setNotes(notesdef);
+    
   }
   //route:1 :add notes 
   async function addNotes(title,descreption,tag) {
@@ -36,7 +41,7 @@ export default function Notestate(props) {
       headers:{
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-        "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWQ4NGRhMDBjMjJiNjRmMWNiOWQyOCIsImlhdCI6MTcxNzQwODIzMX0.LWrEKvdb2H1bevTIq8p1TKfsWzVRx4UK7K9Cws6N4uo",
+        "auth-token": token,
         "Content-Type": "application/json"
       },
       body:JSON.stringify(note)
@@ -63,7 +68,7 @@ export default function Notestate(props) {
       headers:{
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-        "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWQ4NGRhMDBjMjJiNjRmMWNiOWQyOCIsImlhdCI6MTcxNzQwODIzMX0.LWrEKvdb2H1bevTIq8p1TKfsWzVRx4UK7K9Cws6N4uo",
+        "auth-token": token,
         "Content-Type": "application/json"
       },
       
@@ -88,7 +93,7 @@ export default function Notestate(props) {
       headers:{
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-        "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWQ4NGRhMDBjMjJiNjRmMWNiOWQyOCIsImlhdCI6MTcxNzQwODIzMX0.LWrEKvdb2H1bevTIq8p1TKfsWzVRx4UK7K9Cws6N4uo",
+        "auth-token": token,
         "Content-Type": "application/json"
       },
       body:JSON.stringify(note)

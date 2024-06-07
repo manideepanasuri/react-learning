@@ -11,19 +11,19 @@ const {body,validationResult} =require('express-validator');
 router.post("/createUser",[body("name").isLength({min:3}),
 body("email").isEmail(),
 body("password").isLength({min:6})],async(req,res)=>{
-  
+    let success=false;
 
   //expressvalidator  validating the data given
   const result= validationResult(req);
   if(!result.isEmpty()){
-    res.status(400).json(result);
+    res.status(400).json({success:success,err:result});
   }
   else{
     //searching weather user already exists or not
     let user= await User.findOne({email:req.body.email});
     //if exists
     if(user){
-      return res.status(400).json({"err":"user already exists"})
+      return res.status(400).json({success:success,err:"user already exists"})
     }
     //if doesnt exist creating user
     try{
@@ -40,11 +40,11 @@ body("password").isLength({min:6})],async(req,res)=>{
       );
     //console.log(user);  
     }
-    catch(err){res.status(400).send(err)}
+    catch(err){return res.status(400).json({success:success,err:"coudnt generate hash password"})}
 
     const token=jwt.sign({id:user.id},"hello my name is manideep");
-
-    res.status(200).json({"token":token});
+    success=true;
+    res.status(200).json({success:success,token:token});
   }
   
 })
@@ -56,40 +56,44 @@ router.post("/login",[
   body('password').isLength({min:1})
 ],async(req,res)=>{
   let {email,password}=req.body;
+  let success=false;
   const result= validationResult(req);
   //email and password validation
   try{
     if(!result.isEmpty()){
-      return res.status(400).json(result);
+      return res.status(400).json({success:success,err:result});
     }
     else{
       //finding user
       let user=await User.findOne({email:email})
       //if user doesnt exist 
-      if(!user){return res.status(400).json({"err":"user does not exists please sign up"})}
+      if(!user){return res.status(400).json({success:success,err:"user does not exists please sign up"})}
       //comparing inp password with user password
       let pCompareResult=await bcrypt.compare(password,user.password);
       //if result is false
-      if(!pCompareResult){return res.status(400).json({"err":"wrong password"})}
+      if(!pCompareResult){return res.status(400).json({success:success,err:"wrong password"})}
       //if result is true sending token
       const token=jwt.sign({id:user.id},"hello my name is manideep");
-      return res.status(200).json({"token":token});
+      success=true;
+      return res.status(200).json({success:success,token:token});
     }
   }
-  catch(err){console.log(err);return res.status(401).json({err:"server error"})}
+  catch(err){console.log(err);return res.status(401).json({success:success,err:"server error"})}
 })
 
 //get User
 
 router.post("/getUser",fetchuser,async(req,res)=>{
+  let success=false;
   try{
     //storing user without password
   const user=await User.findById(req.user.id).select("-password");
   //sending user
-  res.status(200).json(user);}
+  success=true;
+  res.status(200).json({success:success,user:user});}
   catch(err){
     console.log(err);
-    res.status(401).json({err:"unknown error"})
+    res.status(401).json({success:success,err:"unknown error"})
   }
   
 })
