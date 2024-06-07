@@ -3,6 +3,7 @@ const User=require('../models/user');
 const jwt=require("jsonwebtoken");
 const bcrypt=require("bcrypt");
 const fetchuser=require("../middleware/fetchUser");
+require("dotenv").config();
 
 const router = express.Router()
 const {body,validationResult} =require('express-validator');
@@ -42,7 +43,7 @@ body("password").isLength({min:6})],async(req,res)=>{
     }
     catch(err){return res.status(400).json({success:success,err:"coudnt generate hash password"})}
 
-    const token=jwt.sign({id:user.id},"hello my name is manideep");
+    const token=jwt.sign({id:user.id},process.env.JWT_TOKEN_SCRECT);
     success=true;
     res.status(200).json({success:success,token:token});
   }
@@ -73,7 +74,7 @@ router.post("/login",[
       //if result is false
       if(!pCompareResult){return res.status(400).json({success:success,err:"wrong password"})}
       //if result is true sending token
-      const token=jwt.sign({id:user.id},"hello my name is manideep");
+      const token=jwt.sign({id:user.id},process.env.JWT_TOKEN_SCRECT);
       success=true;
       return res.status(200).json({success:success,token:token});
     }

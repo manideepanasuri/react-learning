@@ -45,7 +45,7 @@ router.post("/createNotes",fetchuser,[
   })
   success=true
   //console.log(note);
-  res.status(200).json({success:success,note:note});
+  res.status(200).json({success:success,notes:note});
   return;
 }
   catch(err){

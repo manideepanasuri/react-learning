@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
+require("dotenv").config()
 
-let url='mongodb://127.0.0.1:27017/cloudNotes';
+let url=process.env.MONGO_DB_URI;
 const ConnectToDb=async()=>{
   try{
     await mongoose.connect(url);

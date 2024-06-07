@@ -1,5 +1,6 @@
 const jwt=require("jsonwebtoken");
 const User=require('../models/user');
+require("dotenv").config()
 
 //fecting user from token
 
@@ -12,7 +13,7 @@ const fetchuser= async(req,res,next)=>{
   //console.log(token);
   try{
     //verifing token 
-    const tokenId=jwt.verify(token,"hello my name is manideep");
+    const tokenId=jwt.verify(token,process.env.JWT_TOKEN_SCRECT);
     req.user=tokenId;
     next();
   }

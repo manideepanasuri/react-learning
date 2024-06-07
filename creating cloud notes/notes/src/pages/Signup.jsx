@@ -2,8 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../context/user/Usercontext";
+import LoadingBar from "react-top-loading-bar";
 
 export default function Signup() {
+  const [progress,setProgress]=useState(0);
+  
   const [name,setName]=useState("");
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
@@ -15,14 +18,18 @@ export default function Signup() {
   },[auth,token])
 
   async function handleSubmit(e) {
+    setProgress(40);
     e.preventDefault();
     let res=await signUp(name,email,password);
     if(res.success){
-      window.localStorage.setItem("auth-token",res.tok)
-      navigate("/");
-    }
+      window.localStorage.setItem("auth-token",res.tok)      
+    }setProgress(100);
     
   }
+  useEffect(()=>{
+    if(auth){navigate("/")}
+  },[auth,token])
+
   function handleNameChange(e) {
     setName(e.target.value);
     //console.log(name)
@@ -37,6 +44,11 @@ export default function Signup() {
   return (
     <div className="min-h-[100vh] bg-background">
       <Navbar />
+      <LoadingBar
+        color='#f11946'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <div>
         <h2 className="text-2xl font-semibold text-center text-textcolor my-4 mb-8">
           Please SignUp To Continue
@@ -78,7 +90,7 @@ export default function Signup() {
                 <label htmlFor="password">
                   <h3 className="text-lg font-semibold text-gray-700">Password</h3>
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     id="password"
                     placeholder="Password"

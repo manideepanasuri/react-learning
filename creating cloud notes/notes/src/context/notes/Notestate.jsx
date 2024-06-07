@@ -5,9 +5,11 @@ import propTypes from "prop-types"
 import AlertContext from '../alert/Alertcontex'
 import UserContext from '../user/Usercontext';
 
+
 export default function Notestate(props) {
   let {showAlert}=useContext(AlertContext);
-  let host="http://localhost:3000"
+  let host=import.meta.env.VITE_HOST;
+  
   let notesdef=[]
   let [notes,setNotes]=useState(notesdef);
   let {token}=useContext(UserContext);
@@ -22,12 +24,12 @@ export default function Notestate(props) {
       "auth-token": token
     }
     })
-    console.log(token);
+    
     let notestemp=await response.json();
     if(!notestemp.success){
       showAlert(notestemp.err,"error")
       return}
-    console.log(notestemp);
+    
     notesdef=notestemp.notes;
     setNotes(notesdef);
     
@@ -47,7 +49,7 @@ export default function Notestate(props) {
       body:JSON.stringify(note)
       })
     let result=await response.json();
-    //console.log(result);
+    
     //frontend
     if(!result.success){
       showAlert(result.err,"error")
@@ -56,8 +58,8 @@ export default function Notestate(props) {
       showAlert("Notes added Successfully","success");
     }
     notesdef=JSON.parse(JSON.stringify(notes));
-    notesdef.unshift(result)
-    //console.log(notesdef);
+    notesdef.unshift(result.notes)
+    
     setNotes(notesdef);
     return
   }
@@ -74,7 +76,7 @@ export default function Notestate(props) {
       
       })
     let result=await response.json();
-    console.log(result);
+    
     if(!result.success){
       showAlert(result.err,"error")
     }
@@ -100,7 +102,7 @@ export default function Notestate(props) {
       
       })
     let result= await response.json();
-    console.log(result)
+    
     if(!result.success){
       showAlert(result.err,"error")
     }
@@ -108,7 +110,9 @@ export default function Notestate(props) {
       showAlert("Notes edited Successfully","success");
     }
     notesdef=JSON.parse(JSON.stringify(notes));
-    
+    notesdef=notesdef.filter((note1)=>{return note1._id!=note._id})
+    notesdef.unshift(result.notes);
+    setNotes(notesdef);
   }
 
 
